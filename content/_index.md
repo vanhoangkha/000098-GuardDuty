@@ -1,6 +1,6 @@
 ---
 title : "Getting Hands on with Amazon GuardDuty"
-date : "`r Sys.Date()`"
+date : "2026-02-18"
 weight : 1
 chapter : false
 ---
@@ -8,50 +8,107 @@ chapter : false
 # Getting Hands on with Amazon GuardDuty
 
 #### Overview
-With **Amazon GuardDuty**, a fully managed service by AWS, this exercise will cover how to detect system threats and remediate them. We will conduct analysis, assessment and how to alarm and remediate security issues based on the findings (*Findings*) of GuardDuty.
 
-To prepare for this exercise, using the built-in **CloudFormation Template**, we will reproduce the attacks and automated fixes by combining **EventBridge Event Rules** and **Lambda Functions**.
-- **Level:** 300
-- **Duration:** 1-2 hours
-- **Requirement:** IAM User (Admin) and AWS CLI
-- **Functions of **CSF** (Cybersecurity Framework):**
-  - Protect (Protect)
-  - Detect (Detect)
-  - Feedback (Respond)
-- **Security Perspectives of **CAF** (Cloud Adoption Framework):**
-  - Preventative (Ability to prevent)
-  - Detective (Traceability)
-  - Responsive
-- **AWS Services Used:**
-  - Amazon EventBridge
-  - Amazon GuardDuty
-  - AWS CloudTrail
-  - AWS Lambda
-  - VPC Security Groups
-  - Amazon SNS
+**Amazon GuardDuty** is an intelligent threat detection service that continuously monitors your AWS accounts, workloads, and data for malicious activity. This workshop covers threat detection, analysis, and automated remediation.
 
-#### Establish
-> The exercise will be set at **us-west-2 (Oregon)**.
+**What's New in 2026:**
+- **GuardDuty Extended Threat Detection** - AI/ML-powered attack sequence detection
+- **GuardDuty Malware Protection for S3** - Scans objects uploaded to S3
+- **GuardDuty Runtime Monitoring** - Real-time threat detection for EKS, ECS, EC2
+- **GuardDuty Attack Sequence Findings** - Correlates multiple signals into attack narratives
 
-For more details, see [**Environment Setup**](1-environment-setup/).
+#### Workshop Details
 
-#### Situation
-The exercise will cover the following scenarios:
-| Order | Name | Specification | Solution |
-| ------ | --- | ------ | --------- |
-| 1 | [Compromised EC2 instance](3-compromised-ec2-instance/) | Detect and recover hacked EC2 instances | Combination of **Amazon GuardDuty**, **Amazon EventBridge Event Rules** and **AWS Lambda** |
-| 2 | [Compromised IAM credentials](4-compromised-iam-credentials/) | Identify an individual who is actively calling an API to the system on AWS | Fix this hazard immediately (manually) |
-| 3 | [IAM role exfiltration](5-iam-role-credential-exfiltration/) | Through a leaked credential, an individual is attempting to hack and call the API from an external server | Fix it with **AWS Lambda** |
+| Attribute | Value |
+|-----------|-------|
+| **Level** | 300 (Advanced) |
+| **Duration** | 2-3 hours |
+| **Cost** | ~$5-10 (cleanup after) |
+| **Region** | us-west-2 (Oregon) |
 
-#### Clean up
-Details are in [**Environment Cleanup**](7-environment-cleanup/).
+#### AWS Services Used
+
+| Service | Purpose |
+|---------|---------|
+| Amazon GuardDuty | Threat detection |
+| Amazon EventBridge | Event routing |
+| AWS Lambda | Automated remediation |
+| AWS Security Hub | Centralized findings |
+| Amazon SNS | Notifications |
+| AWS CloudTrail | API logging |
+| Amazon Detective | Investigation |
+
+#### Scenarios Covered
+
+| # | Scenario | Detection | Remediation |
+|---|----------|-----------|-------------|
+| 1 | Compromised EC2 Instance | GuardDuty + VPC Flow Logs | Auto-isolate with Lambda |
+| 2 | Compromised IAM Credentials | GuardDuty + CloudTrail | Disable keys + notify |
+| 3 | IAM Role Credential Exfiltration | GuardDuty anomaly detection | Revoke sessions + alert |
+| 4 | **[NEW]** Malware in S3 | GuardDuty Malware Protection | Quarantine + scan |
+| 5 | **[NEW]** EKS Runtime Threats | GuardDuty Runtime Monitoring | Pod isolation |
+
+#### Prerequisites
+
+- AWS Account with Admin access
+- AWS CLI v2 configured
+- Basic knowledge of IAM, VPC, Lambda
+
+#### Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     AWS Account                              │
+│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐     │
+│  │   VPC       │    │ CloudTrail  │    │    S3       │     │
+│  │  Flow Logs  │    │   Logs      │    │   Events    │     │
+│  └──────┬──────┘    └──────┬──────┘    └──────┬──────┘     │
+│         │                  │                  │             │
+│         └────────────┬─────┴─────────────────┘             │
+│                      ▼                                      │
+│              ┌───────────────┐                              │
+│              │  GuardDuty    │                              │
+│              │  (ML/AI)      │                              │
+│              └───────┬───────┘                              │
+│                      │ Findings                             │
+│                      ▼                                      │
+│              ┌───────────────┐                              │
+│              │ EventBridge   │                              │
+│              └───────┬───────┘                              │
+│         ┌────────────┼────────────┐                        │
+│         ▼            ▼            ▼                        │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐                   │
+│  │  Lambda  │ │   SNS    │ │ Security │                   │
+│  │ Remediate│ │  Alert   │ │   Hub    │                   │
+│  └──────────┘ └──────────┘ └──────────┘                   │
+└─────────────────────────────────────────────────────────────┘
+```
 
 #### Content
 
-1. [Environment Setup](1-environment-setup/)
-2. [How does GuardDuty Work?](2-how-it-works/)
-3. [Scenario 1: Compromised EC2 instance](3-compromised-ec2-instance/)
-4. [Scenario 2: Compromised IAM credentials](4-compromised-iam-credentials/)
-5. [Scenario 3: IAM role exfiltration](5-iam-role-credential-exfiltration/)
-6. [Summary](6-summary/)
-7. [Cleanup environment](7-environment-cleanup/)
+1. [Introduction](1-intro/)
+2. [Environment Setup](2-environment-setup/)
+3. [How GuardDuty Works](3-how-it-works/)
+4. [Compromised EC2 Instance](4-compromised-ec2-instance/)
+5. [Compromised IAM Credentials](5-compromised-iam-credentials/)
+6. [IAM Role Credential Exfiltration](6-iam-role-credential-exfiltration/)
+7. [Summary](7-summary/)
+8. [Environment Cleanup](8-environment-cleanup/)
+
+#### References
+
+- [Amazon GuardDuty User Guide](https://docs.aws.amazon.com/guardduty/latest/ug/)
+- [GuardDuty Finding Types](https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_finding-types-active.html)
+- [AWS Security Best Practices](https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/)
+- [GuardDuty Malware Protection](https://docs.aws.amazon.com/guardduty/latest/ug/malware-protection.html)
+- [GuardDuty Runtime Monitoring](https://docs.aws.amazon.com/guardduty/latest/ug/runtime-monitoring.html)
+
+#### Cost Optimization
+
+- Enable GuardDuty only in regions you use
+- Use S3 protection selectively for sensitive buckets
+- Review and tune suppression rules to reduce noise
+
+#### License
+
+MIT License - AWS First Cloud Journey

@@ -1,46 +1,89 @@
 ---
 title : "Introduction"
-date : "`r Sys.Date()`"
+date : "2026-02-18"
 weight : 1
 chapter : false
 pre : " <b> 1. </b> "
 ---
 
-#### Overview
-With **Amazon GuardDuty**, a fully managed service by AWS, this exercise will cover how to detect system threats and remediate them. We will conduct analysis, assessment and how to alarm and remediate security issues based on the findings (*Findings*) of GuardDuty.
+## What is Amazon GuardDuty?
 
-To prepare for this exercise, using the built-in **CloudFormation Template**, we will reproduce the attacks and automated fixes by combining **EventBridge Event Rules** and **Lambda Functions**.
-- **Level:** 300
-- **Duration:** 1-2 hours
-- **Requirement:** IAM User (Admin) and AWS CLI
-- **Functions of **CSF** (Cybersecurity Framework):**
-  - Protect (Protect)
-  - Detect (Detect)
-  - Feedback (Respond)
-- **Security Perspectives of **CAF** (Cloud Adoption Framework):**
-  - Preventative (Ability to prevent)
-  - Detective (Traceability)
-  - Responsive
-- **AWS Services Used:**
-  - Amazon EventBridge
-  - Amazon GuardDuty
-  - AWS CloudTrail
-  - AWS Lambda
-  - VPC Security Groups
-  - Amazon SNS
+**Amazon GuardDuty** is an intelligent threat detection service that uses machine learning, anomaly detection, and integrated threat intelligence to identify and prioritize potential threats.
 
-#### Establish
-> The exercise will be set at **us-west-2 (Oregon)**.
+### Key Features (2026)
 
-For more details, see [**Environment Setup**](1-environment-setup/).
+| Feature | Description |
+|---------|-------------|
+| **Threat Detection** | Analyzes CloudTrail, VPC Flow Logs, DNS logs |
+| **Malware Protection** | Scans EBS volumes and S3 objects |
+| **Runtime Monitoring** | Real-time monitoring for EKS, ECS, EC2 |
+| **Extended Threat Detection** | AI-powered attack sequence correlation |
+| **Multi-Account Support** | Centralized management via Organizations |
 
-#### Situation
-The exercise will cover the following scenarios:
-| Order | Name | Specification | Solution |
-| ------ | --- | ------ | --------- |
-| 1 | [Compromised EC2 instance](3-compromised-ec2-instance/) | Detect and recover hacked EC2 instances | Combination of **Amazon GuardDuty**, **Amazon EventBridge Event Rules** and **AWS Lambda** |
-| 2 | [Compromised IAM credentials](4-compromised-iam-credentials/) | Identify an individual who is actively calling an API to the system on AWS | Fix this hazard immediately (manually) |
-| 3 | [IAM role exfiltration](5-iam-role-credential-exfiltration/) | Through a leaked credential, an individual is attempting to hack and call the API from an external server | Fix it with **AWS Lambda** |
+### Data Sources
 
-#### Clean up
-Details are in [**Environment Cleanup**](7-environment-cleanup/).
+```
+┌─────────────────────────────────────────────────┐
+│              GuardDuty Data Sources             │
+├─────────────────────────────────────────────────┤
+│  ✓ AWS CloudTrail Events                        │
+│  ✓ AWS CloudTrail Management Events             │
+│  ✓ VPC Flow Logs                                │
+│  ✓ DNS Logs                                     │
+│  ✓ S3 Data Events (optional)                    │
+│  ✓ EKS Audit Logs (optional)                    │
+│  ✓ RDS Login Activity (optional)                │
+│  ✓ Lambda Network Activity (optional)           │
+│  ✓ EBS Malware Scanning                         │
+│  ✓ Runtime Monitoring (EKS/ECS/EC2)             │
+└─────────────────────────────────────────────────┘
+```
+
+### Finding Categories
+
+| Category | Examples |
+|----------|----------|
+| **Reconnaissance** | Port scanning, API enumeration |
+| **Instance Compromise** | Cryptocurrency mining, malware C2 |
+| **Account Compromise** | Credential theft, privilege escalation |
+| **Bucket Compromise** | Public access, data exfiltration |
+| **Kubernetes Threats** | Privileged containers, suspicious exec |
+| **Malware** | Trojans, ransomware, cryptominers |
+
+### Severity Levels
+
+| Level | Range | Action Required |
+|-------|-------|-----------------|
+| **Critical** | 9.0-10.0 | Immediate response |
+| **High** | 7.0-8.9 | Priority investigation |
+| **Medium** | 4.0-6.9 | Review within 24h |
+| **Low** | 1.0-3.9 | Informational |
+
+### Pricing Model (2026)
+
+| Data Source | Pricing |
+|-------------|---------|
+| CloudTrail Management Events | Per 1M events |
+| VPC Flow Logs | Per GB analyzed |
+| DNS Logs | Per 1M queries |
+| S3 Data Events | Per 1M events |
+| EKS Audit Logs | Per 1M events |
+| Malware Protection | Per GB scanned |
+| Runtime Monitoring | Per vCPU-hour |
+
+> **Tip:** Use the [GuardDuty pricing calculator](https://calculator.aws/#/addService/GuardDuty) to estimate costs.
+
+### Best Practices
+
+1. **Enable in all regions** - Threats can originate anywhere
+2. **Use Organizations** - Centralized management
+3. **Integrate with Security Hub** - Unified view
+4. **Automate remediation** - EventBridge + Lambda
+5. **Review findings regularly** - Tune suppression rules
+6. **Enable all protection plans** - S3, EKS, Malware, Runtime
+
+### References
+
+- [GuardDuty Documentation](https://docs.aws.amazon.com/guardduty/)
+- [GuardDuty Pricing](https://aws.amazon.com/guardduty/pricing/)
+- [AWS Security Blog - GuardDuty](https://aws.amazon.com/blogs/security/tag/amazon-guardduty/)
