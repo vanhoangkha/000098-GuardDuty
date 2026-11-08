@@ -26,16 +26,16 @@ pre : " <b> 1. </b> "
 ┌─────────────────────────────────────────────────┐
 │              GuardDuty Data Sources             │
 ├─────────────────────────────────────────────────┤
-│  ✓ AWS CloudTrail Events                        │
-│  ✓ AWS CloudTrail Management Events             │
-│  ✓ VPC Flow Logs                                │
-│  ✓ DNS Logs                                     │
-│  ✓ S3 Data Events (optional)                    │
-│  ✓ EKS Audit Logs (optional)                    │
-│  ✓ RDS Login Activity (optional)                │
-│  ✓ Lambda Network Activity (optional)           │
-│  ✓ EBS Malware Scanning                         │
-│  ✓ Runtime Monitoring (EKS/ECS/EC2)             │
+│ AWS CloudTrail Events │
+│ AWS CloudTrail Management Events │
+│ VPC Flow Logs │
+│ DNS Logs │
+│ S3 Data Events (optional) │
+│ EKS Audit Logs (optional) │
+│ RDS Login Activity (optional) │
+│ Lambda Network Activity (optional) │
+│ EBS Malware Scanning │
+│ Runtime Monitoring (EKS/ECS/EC2) │
 └─────────────────────────────────────────────────┘
 ```
 
