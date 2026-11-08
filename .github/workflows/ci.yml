@@ -6,4 +6,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Check HTML
-        run: find . -name "*.html" | head -5 | xargs -I {} echo "Found: {}"
+        run: 'find . -name "*.html" | head -5 | xargs -I {} echo "Found: {}"'
