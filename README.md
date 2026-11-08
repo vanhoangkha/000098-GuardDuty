@@ -1,4 +1,4 @@
-# 🕵️ GuardDuty
+# GuardDuty
 
 Threat detection and continuous monitoring with Amazon GuardDuty.
 
@@ -8,7 +8,7 @@ This is a hands-on workshop from the **AWS First Cloud Journey** series.
 
 ## Workshop
 
-📖 **[Start the workshop](https://vanhoangkha.github.io/000098-GuardDuty/)**
+**[Start the workshop](https://vanhoangkha.github.io/000098-GuardDuty/)**
 
 ## Prerequisites
 
